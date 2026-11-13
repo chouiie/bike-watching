@@ -47,6 +47,32 @@ body {
   stroke: white;
   stroke-width: 1;
   pointer-events: auto;
+  cursor: pointer;
+}
+
+#map circle:hover {
+  fill-opacity: 0.9;
+  stroke-width: 2;
+}
+
+#tooltip {
+  position: fixed;
+  z-index: 10;
+  pointer-events: none;
+  background: white;
+  padding: 0.5em 0.75em;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 0.85em;
+  line-height: 1.4;
+
+  strong {
+    display: block;
+  }
+}
+
+#tooltip[hidden] {
+  display: none;
 }
 
 header {

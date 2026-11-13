@@ -152,21 +152,25 @@ map.on('load', async () => {
     .enter()
     .append('circle')
     .attr('r', (d) => radiusScale(d.totalTraffic))
-    .style('--departure-ratio', departureRatio)
-    .each(function (d) {
-      d3.select(this).append('title');
-    });
+    .style('--departure-ratio', departureRatio);
 
-  function updateTooltips() {
-    circles
-      .select('title')
-      .text(
-        (d) =>
-          `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`,
-      );
+  const tooltip = document.getElementById('tooltip');
+
+  function moveTooltip(event) {
+    tooltip.style.left = `${event.clientX + 14}px`;
+    tooltip.style.top = `${event.clientY + 14}px`;
   }
 
-  updateTooltips();
+  circles
+    .on('mouseenter', (event, d) => {
+      tooltip.innerHTML = `<strong>${d.name}</strong>${d.totalTraffic} trips<br>${d.departures} departures, ${d.arrivals} arrivals`;
+      tooltip.hidden = false;
+      moveTooltip(event);
+    })
+    .on('mousemove', moveTooltip)
+    .on('mouseleave', () => {
+      tooltip.hidden = true;
+    });
 
   function updatePositions() {
     circles
@@ -195,8 +199,6 @@ map.on('load', async () => {
       .join('circle')
       .attr('r', (d) => radiusScale(d.totalTraffic))
       .style('--departure-ratio', departureRatio);
-
-    updateTooltips();
   }
 
   function updateTimeDisplay() {
